@@ -10,14 +10,17 @@ class ES{
         backpack myBackpack;
         int priceAns;
         vector<bool> takeList;
-        string writeDir;
+        bool timeSet;
+        string writeDir,writeId;
 
     public:
-        ES(string);
+        ES();
         void esMethod();
+        void modSet();
         void show();
-        void writeTxt(string);
-        void process();
+        void writeTxt();
+        bool gettimeSet();
+        void setBackpack(string);
 };
 
 # endif

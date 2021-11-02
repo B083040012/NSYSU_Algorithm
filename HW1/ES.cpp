@@ -3,16 +3,19 @@
 
 #include "ES.h"
 
-ES::ES(string dataId){
-    myBackpack = backpack(dataId);
+// constructor of ES method,set write txt in 'answer folder'
+ES::ES(){
+    myBackpack = backpack();
     priceAns = 0;
     takeList.resize(myBackpack.getItemNum(), 0);
-    writeDir = "answer/";
+    writeId="";
+    writeDir = "answer";
+    timeSet=false;
 }
 
+// main ES method,using prev_permutation for finding best solution--> may occur timeout
 void ES::esMethod(){
     int itemNum = myBackpack.getItemNum();
-    cout << "itemNum: " << itemNum << endl;
     vector<bool> takeListTmp;
     takeListTmp.resize(itemNum, 0);
     for (int takeNum = 1; takeNum <= itemNum; takeNum++){
@@ -21,14 +24,8 @@ void ES::esMethod(){
         for (int m = 0; m < takeNum; m++)
             takeListTmp[m] = 1;
 
-        cout << "\n\nwhen takeNum=" << takeNum << endl;
-
         do
         {
-            cout << "check:" << endl;
-            for (int p = 0; p < takeListTmp.size();p++)
-                cout << takeListTmp[p] << " ";
-            cout << endl;
             int priceAnsTmp = 0, capTmp = myBackpack.getCapability();
             for (int takeIndex = 0; takeIndex < itemNum; takeIndex++)
             {
@@ -43,10 +40,16 @@ void ES::esMethod(){
                 priceAns = priceAnsTmp;
                 takeList = takeListTmp;
             }
-        } while(std::prev_permutation(takeListTmp.begin(), takeListTmp.end()));
+        } while(std::prev_permutation(takeListTmp.begin(), takeListTmp.end()) && !this->timeSet);
     }
 }
 
+// set timeSet when timeout
+void ES::modSet(){
+    this->timeSet=true;
+}
+
+// show solution
 void ES::show(){
     cout << "priceAns:" << priceAns << endl;
     cout << "takeList:\n";
@@ -55,11 +58,13 @@ void ES::show(){
     }
 }
 
-void ES::writeTxt(string fileName){
+// write solution into txt place in 'answer'
+void ES::writeTxt(){
+    string fileName=this->writeId;
     ofstream write;
-    write.open(writeDir + "ans_" + fileName + ".txt");
+    write.open(writeDir + "/" + "ans_" + fileName + ".txt");
     if(!write){
-        cout << writeDir + fileName << " cannot open.\n";
+        cout << writeDir + "/" + "ans_" + fileName + ".txt" << " cannot open.\n";
     }
     else{
         write << priceAns;
@@ -69,19 +74,20 @@ void ES::writeTxt(string fileName){
     }
 }
 
-void ES::process(){
-    myBackpack.process();
+// check if timeout or not
+bool ES::gettimeSet(){
+    return this->timeSet;
+}
+
+// initialize backpack by input file
+void ES::setBackpack(string inputDir){
+    this->writeId=inputDir.back();
+    myBackpack.process(inputDir);
     cout << "\n\nbackpack information:\n";
     cout << "============================\n";
     myBackpack.show();
     cout << "\n============================\n";
     cout << "\nesMethod executing:...\n";
-    this->esMethod();
-    cout << "\n\n";
-    this->show();
-    cout << "writing ans file...\n";
-    this->writeTxt(myBackpack.getDataId());
-    cout << "complete writing\n";
 }
 
 # endif
