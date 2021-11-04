@@ -9,7 +9,8 @@ all:run
 run:
 	$(CC) -c $(MAIN_FILE).cpp $(GREEDY_FILE).cpp src/$(BACKPACK_FILE).cpp
 	$(CC) -o $(MAIN_FILE) $(MAIN_FILE).o $(GREEDY_FILE).o $(BACKPACK_FILE).o
-	# ./$(MAIN_FILE)
+	# usage of hw1:
+	# ./main.exe -input <inputfile>
 
 
 clean:
