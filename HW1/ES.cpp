@@ -62,9 +62,9 @@ void ES::show(){
 void ES::writeTxt(){
     string fileName=this->writeId;
     ofstream write;
-    write.open(writeDir + "/" + "ans_" + fileName + ".txt");
+    write.open(writeDir + "/" + "ans_ds" + fileName + ".txt");
     if(!write){
-        cout << writeDir + "/" + "ans_" + fileName + ".txt" << " cannot open.\n";
+        cout << writeDir + "/" + "ans_ds" + fileName + ".txt" << " cannot open.\n";
     }
     else{
         write << priceAns;
